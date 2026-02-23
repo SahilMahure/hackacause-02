@@ -1,0 +1,6 @@
+/* Main entry — imports all design modules */
+@import './base.css';
+@import './nav-hero.css';
+@import './sections.css';
+@import './dashboard.css';
+@import './pages.css';

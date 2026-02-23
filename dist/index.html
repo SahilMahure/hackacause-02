@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JalSanket — Drought Early Warning & Smart Water Management</title>
+  <meta name="description"
+    content="A next-generation platform for proactive drought preparedness, early warning, and smart water planning for government authorities." />
+  <meta name="theme-color" content="#0a0e17" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <!-- Main CSS -->
+  <script type="module" crossorigin src="/assets/index-Bf_akbvC.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D4rOD1q5.css">
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ATMOSPHERIC PARTICLES CANVAS               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- NAVIGATION BAR                              -->
+  <!-- ═══════════════════════════════════════════ -->
+  <nav id="main-nav" class="nav-bar hidden">
+    <div class="nav-inner">
+      <div class="nav-brand" id="nav-brand">
+        <div class="brand-icon">
+          <img src="/images/jalsanket-logo.png" alt="JalSanket Logo"
+            style="width: 100%; height: 100%; border-radius: 8px;">
+        </div>
+        <span class="brand-text">JalSanket</span>
+        <span class="brand-divider"></span>
+        <span class="brand-subtitle">Water Intelligence Platform</span>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link active" data-page="dashboard" id="nav-dashboard">
+          <i data-lucide="layout-dashboard" class="nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" data-page="routing" id="nav-routing">
+          <i data-lucide="route" class="nav-icon"></i>
+          <span>Routing</span>
+        </a>
+        <a href="#" class="nav-link" data-page="alerts" id="nav-alerts">
+          <i data-lucide="bell-ring" class="nav-icon"></i>
+          <span>Alerts</span>
+          <span class="alert-badge" id="alert-count">5</span>
+        </a>
+        <a href="#" class="nav-link" data-page="weather" id="nav-weather">
+          <i data-lucide="cloud-rain" class="nav-icon"></i>
+          <span>Weather</span>
+        </a>
+        <a href="#" class="nav-link" data-page="profile" id="nav-profile">
+          <i data-lucide="user-circle" class="nav-icon"></i>
+          <span>Profile</span>
+        </a>
+      </div>
+      <div class="nav-actions">
+        <div class="nav-user" id="nav-user">
+          <div class="user-avatar">
+            <i data-lucide="shield-check"></i>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Collector Office</span>
+            <span class="user-role">District Authority</span>
+          </div>
+        </div>
+        <button class="nav-btn-logout" id="btn-logout">
+          <i data-lucide="log-out"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: LANDING                               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-landing" class="page active">
+
+    <!-- Hero Section -->
+    <div class="hero" id="hero-section">
+      <div class="hero-bg">
+        <div class="hero-bg-image" id="hero-bg-img"></div>
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-bg-grain"></div>
+        <div class="hero-vignette"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge" id="hero-badge">
+          <i data-lucide="radio-tower"></i>
+          <span>GOVERNMENT EARLY WARNING SYSTEM</span>
+        </div>
+
+        <h1 class="hero-title" id="hero-title">
+          <span class="title-line">Predict Water Stress</span>
+          <span class="title-line title-accent">Before It Becomes</span>
+          <span class="title-line">a <em>Crisis</em></span>
+        </h1>
+
+        <p class="hero-subtitle" id="hero-subtitle">
+          A next-generation platform for proactive drought preparedness and water planning. Powered by satellite data,
+          AI forecasting, and real-time ground intelligence.
+        </p>
+
+        <div class="hero-actions" id="hero-actions">
+          <button class="btn btn-primary btn-glow" id="btn-enter-platform">
+            <span>Enter Platform</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+          <button class="btn btn-glass" id="btn-explore">
+            <i data-lucide="compass"></i>
+            <span>Explore System</span>
+          </button>
+        </div>
+
+        <div class="hero-stats" id="hero-stats">
+          <div class="hero-stat">
+            <span class="stat-value" data-count="2847">0</span>
+            <span class="stat-label">Villages Monitored</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-value" data-count="156">0</span>
+            <span class="stat-label">Tankers Deployed</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-value" data-count="98">0</span>
+            <span class="stat-label">% Forecast Accuracy</span>
+          </div>
+          <div class="hero-stat">
+            <span class="stat-value" data-count="12">0</span>
+            <span class="stat-label">Districts Covered</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator" id="scroll-indicator">
+        <div class="scroll-mouse">
+          <div class="scroll-dot"></div>
+        </div>
+        <span>Scroll to explore</span>
+      </div>
+    </div>
+
+    <!-- Problem Narrative Section -->
+    <div class="section section-narrative" id="section-narrative">
+      <div class="section-bg">
+        <div class="narrative-bg-image"></div>
+        <div class="narrative-bg-overlay"></div>
+      </div>
+      <div class="section-content">
+        <div class="narrative-header">
+          <span class="section-tag">THE CRISIS</span>
+          <h2 class="section-title">Every Year, Millions Face<br /><span class="text-accent">Water Scarcity</span></h2>
+          <p class="section-desc">Droughts don't appear overnight. They build silently — in rainfall deficits, depleting
+            groundwater, and rising temperatures. The cost of late action is immeasurable.</p>
+        </div>
+
+        <div class="narrative-cards" id="narrative-cards">
+          <div class="narrative-card glass-card" data-delay="0">
+            <div class="narrative-card-icon critical">
+              <i data-lucide="thermometer-sun"></i>
+            </div>
+            <h3>Rising Temperatures</h3>
+            <p>Average temperatures have risen 1.2°C in the last decade, accelerating evaporation and crop stress across
+              vulnerable regions.</p>
+            <div class="card-stat">
+              <span class="card-stat-value">+1.2°C</span>
+              <span class="card-stat-label">Decade Average Rise</span>
+            </div>
+          </div>
+
+          <div class="narrative-card glass-card" data-delay="0.15">
+            <div class="narrative-card-icon warning">
+              <i data-lucide="droplet-off"></i>
+            </div>
+            <h3>Groundwater Depletion</h3>
+            <p>Over 60% of monitored wells show declining water tables, threatening drinking water supply for rural
+              communities.</p>
+            <div class="card-stat">
+              <span class="card-stat-value">60%</span>
+              <span class="card-stat-label">Wells Declining</span>
+            </div>
+          </div>
+
+          <div class="narrative-card glass-card" data-delay="0.3">
+            <div class="narrative-card-icon danger">
+              <i data-lucide="users"></i>
+            </div>
+            <h3>Population at Risk</h3>
+            <p>3.4 million people in drought-prone regions face acute water shortage every summer without preemptive
+              intervention.</p>
+            <div class="card-stat">
+              <span class="card-stat-value">3.4M</span>
+              <span class="card-stat-label">People Affected</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data → Decision → Action Flow -->
+    <div class="section section-flow" id="section-flow">
+      <div class="section-content">
+        <div class="flow-header">
+          <span class="section-tag">THE SOLUTION</span>
+          <h2 class="section-title">From Raw Data to<br /><span class="text-accent">Decisive Action</span></h2>
+        </div>
+
+        <div class="flow-pipeline" id="flow-pipeline">
+          <div class="flow-step glass-card" data-step="1">
+            <div class="flow-step-number">01</div>
+            <div class="flow-step-icon">
+              <i data-lucide="satellite-dish"></i>
+            </div>
+            <h3>Data Ingestion</h3>
+            <p>Satellite imagery, weather stations, IoT sensors, and ground reports feed into a unified data lake in
+              real-time.</p>
+            <div class="flow-tags">
+              <span class="flow-tag">ISRO Satellite</span>
+              <span class="flow-tag">IMD Weather</span>
+              <span class="flow-tag">IoT Sensors</span>
+            </div>
+          </div>
+
+          <div class="flow-connector">
+            <div class="flow-connector-line"></div>
+            <div class="flow-connector-dot"></div>
+          </div>
+
+          <div class="flow-step glass-card" data-step="2">
+            <div class="flow-step-number">02</div>
+            <div class="flow-step-icon">
+              <i data-lucide="brain-circuit"></i>
+            </div>
+            <h3>AI Analysis</h3>
+            <p>Machine learning models analyze patterns, predict drought severity, forecast water demand, and identify
+              vulnerable zones.</p>
+            <div class="flow-tags">
+              <span class="flow-tag">ML Models</span>
+              <span class="flow-tag">Forecasting</span>
+              <span class="flow-tag">Risk Scoring</span>
+            </div>
+          </div>
+
+          <div class="flow-connector">
+            <div class="flow-connector-line"></div>
+            <div class="flow-connector-dot"></div>
+          </div>
+
+          <div class="flow-step glass-card" data-step="3">
+            <div class="flow-step-number">03</div>
+            <div class="flow-step-icon">
+              <i data-lucide="shield-alert"></i>
+            </div>
+            <h3>Early Warning</h3>
+            <p>Automated alerts reach district collectors, tehsildars, and water authorities with precise severity and
+              recommended actions.</p>
+            <div class="flow-tags">
+              <span class="flow-tag">SMS Alerts</span>
+              <span class="flow-tag">Dashboard</span>
+              <span class="flow-tag">Mobile App</span>
+            </div>
+          </div>
+
+          <div class="flow-connector">
+            <div class="flow-connector-line"></div>
+            <div class="flow-connector-dot"></div>
+          </div>
+
+          <div class="flow-step glass-card" data-step="4">
+            <div class="flow-step-number">04</div>
+            <div class="flow-step-icon">
+              <i data-lucide="truck"></i>
+            </div>
+            <h3>Smart Response</h3>
+            <p>Optimized tanker routing, resource allocation, and community coordination prevent crisis before it
+              escalates.</p>
+            <div class="flow-tags">
+              <span class="flow-tag">Route Planning</span>
+              <span class="flow-tag">Resource Mgmt</span>
+              <span class="flow-tag">Coordination</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="section section-cta" id="section-cta">
+      <div class="section-content">
+        <div class="cta-card glass-card">
+          <div class="cta-glow"></div>
+          <span class="section-tag">TAKE ACTION NOW</span>
+          <h2 class="cta-title">Prevention Over Reaction.<br />Planning Over Panic.</h2>
+          <p class="cta-desc">Join the network of forward-thinking authorities using data-driven drought management to
+            protect communities before disaster strikes.</p>
+          <div class="cta-actions">
+            <button class="btn btn-primary btn-glow btn-lg" id="btn-cta-enter">
+              <span>Enter the Platform</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+          <div class="cta-trust">
+            <div class="trust-item">
+              <i data-lucide="shield-check"></i>
+              <span>Government Verified</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="lock-keyhole"></i>
+              <span>End-to-End Encrypted</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="server"></i>
+              <span>NIC Hosted</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand-icon"><img src="/images/jalsanket-logo.png" alt="Logo" style="width:14px; height:14px;">
+          </div>
+          <span>JalSanket — Water Intelligence Platform</span>
+        </div>
+        <p class="footer-note">An initiative under the Ministry of Jal Shakti, Government of India<br />Developed for
+          proactive drought management and water security.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Support</a>
+          <a href="#">Documentation</a>
+        </div>
+        <p class="footer-copyright">© 2026 JalSanket — Water Intelligence for a Better Future.</p>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: LOGIN                                 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-login" class="page">
+    <div class="login-bg">
+      <div class="login-bg-image"></div>
+      <div class="login-bg-overlay"></div>
+    </div>
+
+    <div class="login-container">
+      <div class="login-card glass-card" id="login-card">
+        <div class="login-header">
+          <div class="login-brand">
+            <div class="brand-icon"><img src="/images/jalsanket-logo.png" alt="Logo" style="width:22px; height:22px;">
+            </div>
+            <span>JalSanket</span>
+          </div>
+          <h2>Secure Authority Access</h2>
+          <p>Access restricted to authorized government personnel only.</p>
+        </div>
+
+        <form class="login-form" id="login-form">
+          <div class="form-group">
+            <label for="login-email">
+              <i data-lucide="mail"></i>
+              <span>Official Email Address</span>
+            </label>
+            <input type="email" id="login-email" placeholder="name@gov.in" autocomplete="email" />
+          </div>
+
+          <div class="form-group">
+            <label for="login-mobile">
+              <i data-lucide="smartphone"></i>
+              <span>Registered Mobile Number</span>
+            </label>
+            <div class="input-prefix-group">
+              <span class="input-prefix">+91</span>
+              <input type="tel" id="login-mobile" placeholder="98765 43210" maxlength="12" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-glow btn-full" id="btn-login-submit">
+            <i data-lucide="shield-check"></i>
+            <span>Secure Access</span>
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <div class="login-security">
+            <i data-lucide="lock-keyhole"></i>
+            <span>256-bit AES Encrypted · NIC Infrastructure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: VERIFICATION                          -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-verify" class="page">
+    <div class="login-bg">
+      <div class="login-bg-image"></div>
+      <div class="login-bg-overlay"></div>
+    </div>
+
+    <div class="login-container">
+      <div class="verify-card glass-card" id="verify-card">
+        <div class="login-header">
+          <div class="verify-step-indicator">
+            <div class="step-dot active"></div>
+            <div class="step-line"></div>
+            <div class="step-dot active"></div>
+            <div class="step-line"></div>
+            <div class="step-dot"></div>
+          </div>
+          <h2>JalSanket Authority Verification</h2>
+          <p>Complete your identity verification to access the platform.</p>
+        </div>
+
+        <form class="login-form verify-form" id="verify-form">
+          <div class="form-group">
+            <label for="verify-dept">
+              <i data-lucide="building-2"></i>
+              <span>Department / Organization</span>
+            </label>
+            <select id="verify-dept">
+              <option value="">Select Department</option>
+              <option>District Collector Office</option>
+              <option>Water Resources Department</option>
+              <option>Revenue & Disaster Management</option>
+              <option>Rural Water Supply</option>
+              <option>Agricultural Department</option>
+              <option>Irrigation Department</option>
+              <option>Groundwater Survey & Development</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="verify-designation">
+              <i data-lucide="badge-check"></i>
+              <span>Designation</span>
+            </label>
+            <input type="text" id="verify-designation" placeholder="e.g. District Collector, Tehsildar" />
+          </div>
+
+          <div class="form-group">
+            <label for="verify-state">
+              <i data-lucide="map"></i>
+              <span>State</span>
+            </label>
+            <select id="verify-state">
+              <option value="">Select State</option>
+              <option value="maharashtra">Maharashtra</option>
+              <option value="gujarat">Gujarat</option>
+              <option value="rajasthan">Rajasthan</option>
+              <option value="karnataka">Karnataka</option>
+              <option value="telangana">Telangana</option>
+              <option value="andhra_pradesh">Andhra Pradesh</option>
+              <option value="madhya_pradesh">Madhya Pradesh</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="verify-jurisdiction">
+              <i data-lucide="map-pin"></i>
+              <span>Jurisdiction / District</span>
+            </label>
+            <select id="verify-jurisdiction" disabled>
+              <option value="">Select District</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <i data-lucide="id-card"></i>
+              <span>Government ID Upload</span>
+            </label>
+            <div class="file-upload-zone" id="file-upload-zone">
+              <i data-lucide="upload-cloud"></i>
+              <p>Drop your Government ID here or <span class="text-accent">browse</span></p>
+              <span class="file-hint">Supports: PDF, JPG, PNG (Max 5MB)</span>
+              <input type="file" id="verify-id-upload" accept=".pdf,.jpg,.jpeg,.png" hidden />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-glow btn-full" id="btn-verify-submit">
+            <i data-lucide="check-circle"></i>
+            <span>Complete Verification</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: DASHBOARD                             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-dashboard" class="page page-app">
+    <div class="app-content">
+      <!-- Top Statistics Bar -->
+      <div class="stats-bar" id="dashboard-stats">
+        <div class="stat-card glass-card" data-type="critical">
+          <div class="stat-card-icon"><i data-lucide="alert-triangle"></i></div>
+          <div class="stat-card-info">
+            <span class="stat-card-value" data-count="47">0</span>
+            <span class="stat-card-label">Critical Villages</span>
+          </div>
+          <div class="stat-card-trend down">
+            <i data-lucide="trending-up"></i>
+            <span>+12%</span>
+          </div>
+        </div>
+
+        <div class="stat-card glass-card" data-type="warning">
+          <div class="stat-card-icon"><i data-lucide="droplet"></i></div>
+          <div class="stat-card-info">
+            <span class="stat-card-value" data-count="73">0</span>
+            <span class="stat-card-label">Water Stress Index</span>
+          </div>
+          <div class="stat-card-trend warning">
+            <i data-lucide="trending-up"></i>
+            <span>+8%</span>
+          </div>
+        </div>
+
+        <div class="stat-card glass-card" data-type="info">
+          <div class="stat-card-icon"><i data-lucide="cloud-rain-wind"></i></div>
+          <div class="stat-card-info">
+            <span class="stat-card-value" data-count="-34">0</span>
+            <span class="stat-card-label">Rainfall Deviation %</span>
+          </div>
+          <div class="stat-card-trend down">
+            <i data-lucide="trending-down"></i>
+            <span>-34%</span>
+          </div>
+        </div>
+
+        <div class="stat-card glass-card" data-type="neutral">
+          <div class="stat-card-icon"><i data-lucide="users"></i></div>
+          <div class="stat-card-info">
+            <span class="stat-card-value" data-count="284700">0</span>
+            <span class="stat-card-label">Population Affected</span>
+          </div>
+          <div class="stat-card-trend down">
+            <i data-lucide="trending-up"></i>
+            <span>+5.2K</span>
+          </div>
+        </div>
+
+        <div class="stat-card glass-card" data-type="active">
+          <div class="stat-card-icon"><i data-lucide="truck"></i></div>
+          <div class="stat-card-info">
+            <span class="stat-card-value" data-count="156">0</span>
+            <span class="stat-card-label">Tankers Active</span>
+          </div>
+          <div class="stat-card-trend up">
+            <i data-lucide="trending-up"></i>
+            <span>+23</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dashboard Layout -->
+      <div class="dashboard-grid">
+        <!-- Map Section -->
+        <div class="dashboard-map glass-card" id="dashboard-map-container">
+          <div class="map-header">
+            <h3><i data-lucide="map"></i> Drought Severity Map</h3>
+            <div class="map-controls">
+              <button class="map-ctrl-btn active" data-layer="severity" id="map-layer-severity">Severity</button>
+              <button class="map-ctrl-btn" data-layer="rainfall" id="map-layer-rainfall">Rainfall</button>
+              <button class="map-ctrl-btn" data-layer="groundwater" id="map-layer-groundwater">Groundwater</button>
+            </div>
+          </div>
+          <div id="dashboard-map" class="map-container"></div>
+          <div class="map-legend">
+            <div class="legend-title">Stress Level</div>
+            <div class="legend-items">
+              <div class="legend-item"><span class="legend-color" style="background:#22c55e"></span>Stable</div>
+              <div class="legend-item"><span class="legend-color" style="background:#f59e0b"></span>Warning</div>
+              <div class="legend-item"><span class="legend-color" style="background:#ef4444"></span>Critical</div>
+              <div class="legend-item"><span class="legend-color" style="background:#7c1d1d"></span>Severe</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="dashboard-side">
+          <!-- Water Stress Gauge -->
+          <div class="side-card glass-card" id="stress-gauge-card">
+            <h4><i data-lucide="gauge"></i> Regional Water Stress</h4>
+            <div class="gauge-container" id="stress-gauge">
+              <svg viewBox="0 0 200 120" class="gauge-svg">
+                <defs>
+                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#22c55e" />
+                    <stop offset="50%" style="stop-color:#f59e0b" />
+                    <stop offset="100%" style="stop-color:#ef4444" />
+                  </linearGradient>
+                </defs>
+                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"
+                  stroke-linecap="round" />
+                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="12"
+                  stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="70" class="gauge-fill" />
+                <text x="100" y="85" text-anchor="middle" fill="white" font-size="28" font-weight="700"
+                  class="gauge-value">73</text>
+                <text x="100" y="105" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="10"
+                  font-weight="400">of 100</text>
+              </svg>
+            </div>
+            <div class="gauge-labels">
+              <span class="gauge-label safe">Safe</span>
+              <span class="gauge-label warn">Warning</span>
+              <span class="gauge-label danger">Critical</span>
+            </div>
+          </div>
+
+          <!-- Rainfall Chart -->
+          <div class="side-card glass-card" id="rainfall-chart-card">
+            <h4><i data-lucide="cloud-rain"></i> Monthly Rainfall (mm)</h4>
+            <div class="bar-chart" id="rainfall-chart">
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:20%" data-value="12"><span class="bar-tooltip">12mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:35%" data-value="28"><span class="bar-tooltip">28mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">Jan</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:15%" data-value="8"><span class="bar-tooltip">8mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:30%" data-value="22"><span class="bar-tooltip">22mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">Feb</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:18%" data-value="10"><span class="bar-tooltip">10mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:28%" data-value="18"><span class="bar-tooltip">18mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">Mar</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:25%" data-value="18"><span class="bar-tooltip">18mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:40%" data-value="35"><span class="bar-tooltip">35mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">Apr</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:40%" data-value="45"><span class="bar-tooltip">45mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:60%" data-value="78"><span class="bar-tooltip">78mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">May</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-wrapper">
+                  <div class="bar bar-actual" style="height:70%" data-value="95"><span class="bar-tooltip">95mm</span>
+                  </div>
+                  <div class="bar bar-normal" style="height:85%" data-value="145"><span class="bar-tooltip">145mm</span>
+                  </div>
+                </div>
+                <span class="bar-label">Jun</span>
+              </div>
+            </div>
+            <div class="chart-legend-small">
+              <span><span class="dot-actual"></span> Actual</span>
+              <span><span class="dot-normal"></span> Normal</span>
+            </div>
+          </div>
+
+          <!-- Recent Alerts -->
+          <div class="side-card glass-card" id="recent-alerts-card">
+            <h4><i data-lucide="bell-ring"></i> Recent Alerts</h4>
+            <div class="mini-alerts">
+              <div class="mini-alert critical">
+                <div class="mini-alert-dot"></div>
+                <div class="mini-alert-content">
+                  <span class="mini-alert-title">Critical: Beed District</span>
+                  <span class="mini-alert-time">12 min ago</span>
+                </div>
+              </div>
+              <div class="mini-alert warning">
+                <div class="mini-alert-dot"></div>
+                <div class="mini-alert-content">
+                  <span class="mini-alert-title">Supply Gap: Osmanabad</span>
+                  <span class="mini-alert-time">34 min ago</span>
+                </div>
+              </div>
+              <div class="mini-alert warning">
+                <div class="mini-alert-dot"></div>
+                <div class="mini-alert-content">
+                  <span class="mini-alert-title">Tanker Delay: Route 7</span>
+                  <span class="mini-alert-time">1 hr ago</span>
+                </div>
+              </div>
+              <div class="mini-alert info">
+                <div class="mini-alert-dot"></div>
+                <div class="mini-alert-content">
+                  <span class="mini-alert-title">New Bore Well: Jalna</span>
+                  <span class="mini-alert-time">2 hr ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: ROUTING                               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-routing" class="page page-app">
+    <div class="app-content">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title"><i data-lucide="route"></i> Tanker Route Planning</h2>
+          <p class="page-desc">Optimize water tanker deployment with AI-powered routing and real-time tracking</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-glass btn-sm" id="btn-optimize-routes">
+            <i data-lucide="sparkles"></i>
+            <span>Auto-Optimize</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-new-route">
+            <i data-lucide="plus"></i>
+            <span>New Route</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="routing-grid">
+        <div class="routing-map glass-card">
+          <div id="routing-map" class="map-container"></div>
+        </div>
+
+        <div class="routing-side">
+          <div class="route-card glass-card" id="route-1">
+            <div class="route-header">
+              <div class="route-status active">
+                <span class="route-status-dot"></span>
+                <span>En Route</span>
+              </div>
+              <span class="route-id">TK-0847</span>
+            </div>
+            <div class="route-details">
+              <div class="route-path">
+                <div class="route-point start">
+                  <i data-lucide="map-pin"></i>
+                  <span>Beed Water Tank #3</span>
+                </div>
+                <div class="route-line-vertical">
+                  <div class="route-progress" style="height:65%"></div>
+                </div>
+                <div class="route-point end">
+                  <i data-lucide="flag"></i>
+                  <span>Parli Village Cluster</span>
+                </div>
+              </div>
+              <div class="route-meta">
+                <div class="route-meta-item">
+                  <i data-lucide="clock"></i>
+                  <span>ETA: 1h 23m</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="ruler"></i>
+                  <span>42.5 km</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="droplets"></i>
+                  <span>12,000 L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="route-card glass-card" id="route-2">
+            <div class="route-header">
+              <div class="route-status loading">
+                <span class="route-status-dot"></span>
+                <span>Loading</span>
+              </div>
+              <span class="route-id">TK-0923</span>
+            </div>
+            <div class="route-details">
+              <div class="route-path">
+                <div class="route-point start">
+                  <i data-lucide="map-pin"></i>
+                  <span>Latur Central Depot</span>
+                </div>
+                <div class="route-line-vertical">
+                  <div class="route-progress" style="height:15%"></div>
+                </div>
+                <div class="route-point end">
+                  <i data-lucide="flag"></i>
+                  <span>Udgir Tehsil Villages</span>
+                </div>
+              </div>
+              <div class="route-meta">
+                <div class="route-meta-item">
+                  <i data-lucide="clock"></i>
+                  <span>ETA: 2h 45m</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="ruler"></i>
+                  <span>67.2 km</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="droplets"></i>
+                  <span>20,000 L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="route-card glass-card" id="route-3">
+            <div class="route-header">
+              <div class="route-status completed">
+                <span class="route-status-dot"></span>
+                <span>Delivered</span>
+              </div>
+              <span class="route-id">TK-0756</span>
+            </div>
+            <div class="route-details">
+              <div class="route-path">
+                <div class="route-point start">
+                  <i data-lucide="map-pin"></i>
+                  <span>Osmanabad Reservoir</span>
+                </div>
+                <div class="route-line-vertical">
+                  <div class="route-progress completed" style="height:100%"></div>
+                </div>
+                <div class="route-point end">
+                  <i data-lucide="flag"></i>
+                  <span>Tuljapur 12 Villages</span>
+                </div>
+              </div>
+              <div class="route-meta">
+                <div class="route-meta-item">
+                  <i data-lucide="clock"></i>
+                  <span>Completed: 2h ago</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="ruler"></i>
+                  <span>38.9 km</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="droplets"></i>
+                  <span>10,000 L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="route-card glass-card" id="route-4">
+            <div class="route-header">
+              <div class="route-status scheduled">
+                <span class="route-status-dot"></span>
+                <span>Scheduled</span>
+              </div>
+              <span class="route-id">TK-1002</span>
+            </div>
+            <div class="route-details">
+              <div class="route-path">
+                <div class="route-point start">
+                  <i data-lucide="map-pin"></i>
+                  <span>Jalna Depot #1</span>
+                </div>
+                <div class="route-line-vertical">
+                  <div class="route-progress" style="height:0%"></div>
+                </div>
+                <div class="route-point end">
+                  <i data-lucide="flag"></i>
+                  <span>Ambad Block Villages</span>
+                </div>
+              </div>
+              <div class="route-meta">
+                <div class="route-meta-item">
+                  <i data-lucide="clock"></i>
+                  <span>Departs: 4:30 PM</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="ruler"></i>
+                  <span>55.1 km</span>
+                </div>
+                <div class="route-meta-item">
+                  <i data-lucide="droplets"></i>
+                  <span>15,000 L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: ALERTS                                -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-alerts" class="page page-app">
+    <div class="app-content">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title"><i data-lucide="bell-ring"></i> Early Warning Alerts</h2>
+          <p class="page-desc">Real-time drought threat monitoring and automated early warning system</p>
+        </div>
+        <div class="page-header-actions">
+          <div class="alert-filter-group">
+            <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+            <button class="filter-btn" data-filter="critical" id="filter-critical">Critical</button>
+            <button class="filter-btn" data-filter="warning" id="filter-warning">Warning</button>
+            <button class="filter-btn" data-filter="info" id="filter-info">Info</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="alerts-timeline" id="alerts-timeline">
+        <div class="timeline-line"></div>
+
+        <div class="alert-item critical" data-severity="critical">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Today, 12:45 PM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity critical">
+                <i data-lucide="alert-octagon"></i>
+                <span>CRITICAL</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Beed District</span>
+            </div>
+            <h3 class="alert-title">High Water Stress Detected — Immediate Action Required</h3>
+            <p class="alert-desc">Water stress index has crossed threshold 85/100 in 12 villages of Beed tehsil.
+              Underground water level dropped below 15ft. Estimated 23,000 people at risk of acute drinking water
+              shortage within 7 days.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-primary"><i data-lucide="truck"></i> Deploy Tankers</button>
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item critical" data-severity="critical">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Today, 11:30 AM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity critical">
+                <i data-lucide="alert-octagon"></i>
+                <span>CRITICAL</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Osmanabad District</span>
+            </div>
+            <h3 class="alert-title">Supply Gap Forecasted — 72 Hour Window</h3>
+            <p class="alert-desc">AI models predict a supply-demand gap in Osmanabad block within 72 hours based on
+              current consumption rate and no rainfall forecast. Reservoir levels at 12% capacity.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-primary"><i data-lucide="route"></i> Plan Route</button>
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item warning" data-severity="warning">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Today, 10:15 AM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity warning">
+                <i data-lucide="alert-triangle"></i>
+                <span>WARNING</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Latur District</span>
+            </div>
+            <h3 class="alert-title">Groundwater Decline Accelerating in 8 Villages</h3>
+            <p class="alert-desc">Monitoring wells show a 2.3m decline in groundwater levels over the past 30 days in
+              the Ausa tehsil area. Current trajectory suggests crossing critical threshold in 14 days.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+              <button class="btn btn-sm btn-glass"><i data-lucide="bell"></i> Set Watch</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item warning" data-severity="warning">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Today, 9:00 AM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity warning">
+                <i data-lucide="alert-triangle"></i>
+                <span>WARNING</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Jalna District</span>
+            </div>
+            <h3 class="alert-title">Rainfall Deficit Exceeds 40% — Kharif Crop Risk</h3>
+            <p class="alert-desc">Cumulative rainfall in Jalna district is -42% below normal. IMD forecast indicates no
+              significant precipitation for the next 10 days. Crop insurance advisory recommended.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item info" data-severity="info">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Yesterday, 5:30 PM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity info">
+                <i data-lucide="info"></i>
+                <span>INFO</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Nanded District</span>
+            </div>
+            <h3 class="alert-title">New Bore Well Commissioned — Capacity Added</h3>
+            <p class="alert-desc">A new community bore well has been commissioned in Biloli tehsil, adding 15,000
+              liters/day capacity. This addresses water needs for approximately 800 residents in the area.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-item info" data-severity="info">
+          <div class="alert-time-marker">
+            <div class="alert-dot"></div>
+            <span class="alert-timestamp">Yesterday, 2:00 PM</span>
+          </div>
+          <div class="alert-card glass-card">
+            <div class="alert-card-header">
+              <div class="alert-severity info">
+                <i data-lucide="info"></i>
+                <span>INFO</span>
+              </div>
+              <span class="alert-location"><i data-lucide="map-pin"></i> Parbhani District</span>
+            </div>
+            <h3 class="alert-title">Tanker Fleet Deployment Complete — 15 Units Active</h3>
+            <p class="alert-desc">All 15 authorized water tankers for Parbhani district have been deployed and are
+              operational. Full district coverage achieved with optimized routing.</p>
+            <div class="alert-actions">
+              <button class="btn btn-sm btn-glass"><i data-lucide="eye"></i> View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PAGE: WEATHER                               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="page-weather" class="page page-app">
+    <div class="app-content">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title"><i data-lucide="cloud-rain"></i> Live Weather Intelligence</h2>
+          <p class="page-desc">Real-time meteorological data from Open-Meteo API for drought-prone regions</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-glass btn-sm" id="btn-refresh-weather">
+            <i data-lucide="refresh-cw"></i>
+            <span>Refresh Data</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="weather-grid" id="weather-grid">
+        <!-- Weather cards will be injected here by JS -->
+        <div class="weather-loading">
+          <div class="loading-spinner"></div>
+          <span>Fetching live weather data...</span>
+        </div>
+      </div>
+    </div>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PAGE: PROFILE                               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section id="page-profile" class="page page-app">
+      <div class="app-content">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title"><i data-lucide="user-circle"></i> Authority Profile</h2>
+            <p class="page-desc">Authorized personnel identity and department details</p>
+          </div>
+        </div>
+
+        <div class="profile-container">
+          <div class="profile-card glass-card">
+            <div class="profile-cover"></div>
+            <div class="profile-info-header">
+              <div class="profile-avatar-large">
+                <i data-lucide="shield-check"></i>
+              </div>
+              <div class="profile-main-meta">
+                <h3 id="profile-name-display">Collector Office</h3>
+                <span id="profile-role-display">District Authority</span>
+              </div>
+              <div class="profile-badge-status">
+                <span class="status-indicator verified"></span>
+                <span>VERIFIED ACCESS</span>
+              </div>
+            </div>
+
+            <div class="profile-grid">
+              <div class="profile-info-group">
+                <label>Official Email</label>
+                <p id="profile-email-display">collector@mah.gov.in</p>
+              </div>
+              <div class="profile-info-group">
+                <label>Mobile Number</label>
+                <p id="profile-mobile-display">+91 98765 43210</p>
+              </div>
+              <div class="profile-info-group">
+                <label>Department</label>
+                <p id="profile-dept-display">District Collector Office</p>
+              </div>
+              <div class="profile-info-group">
+                <label>Designation</label>
+                <p id="profile-desig-display">District Collector</p>
+              </div>
+              <div class="profile-info-group">
+                <label>State</label>
+                <p id="profile-state-display">Maharashtra</p>
+              </div>
+              <div class="profile-info-group">
+                <label>Jurisdiction</label>
+                <p id="profile-juris-display">Beed</p>
+              </div>
+            </div>
+
+            <div class="profile-footer">
+              <button class="btn btn-glass btn-sm">
+                <i data-lucide="edit"></i>
+                <span>Edit Details</span>
+              </button>
+              <div class="footer-security-note">
+                <i data-lucide="lock"></i>
+                <span>Last login: 23 Feb 2026, 03:20 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LOADING OVERLAY                             -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-icon">
+        <i data-lucide="droplets"></i>
+      </div>
+      <div class="loading-bar">
+        <div class="loading-bar-fill"></div>
+      </div>
+      <span class="loading-text">Initializing Secure Platform...</span>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+
+</html>
